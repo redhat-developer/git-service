@@ -10,7 +10,7 @@ npm install git-service-node
 ## How to use
 Get git service from factory method
 ```sh
- import {getGitService} from 'git-service-node'
+ import { getGitService } from 'git-service-node/src'
  const service = getGitService(gitsource, gitprovider);
 ```
 ### API available
