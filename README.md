@@ -1,17 +1,16 @@
 
 ## Quick start
 
-This project is intended to be used with the latest Active LTS release of [Node.js][nodejs]. To start, just clone the repository with following commands:
+Import library
 
 ```sh
-git clone https://github.com/akashshinde/git-service-lib
-cd git-service-lib
-npm install
+npm install git-service-node
 ```
 
 ## How to use
 Get git service from factory method
 ```sh
+ import {getGitService} from 'git-service-node'
  const service = getGitService(gitsource, gitprovider);
 ```
 ### API available
