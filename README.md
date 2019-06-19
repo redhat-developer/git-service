@@ -44,7 +44,7 @@ Detect build type
 
 Get list of files exist in the repo 
 ```sh
- const buildTypes = service.detectBuildType();
+ const buildTypes = service.getRepoFileList();
 ```
 
 ## Available scripts
