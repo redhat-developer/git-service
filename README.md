@@ -8,12 +8,25 @@ npm install git-service-node
 ```
 
 ## How to use
+#### Data Model
+Gitsource 
+```sh
+{
+  url: string;
+  secretType: SecretType;
+  secretContent: any;
+  ref?: string
+}
+```
+
+#### Get git Service
 Get git service from factory method
 ```sh
  import { getGitService } from 'git-service-node/src'
  const service = getGitService(gitsource, gitprovider);
 ```
-### API available
+
+#### APIs available
 Check if Repo exist
 ```sh
  const resp = service.isRepoReachable();
