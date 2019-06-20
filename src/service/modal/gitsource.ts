@@ -1,8 +1,8 @@
 export class GitSource {
   url: string;
   secretType: SecretType;
-  secretContent: any;
-  ref?: string
+  secretContent?: any;
+  ref?: string;
   constructor(url: string,
                 secretType: SecretType,
                 secretContent: any,

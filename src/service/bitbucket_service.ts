@@ -6,6 +6,7 @@ import {GitSource, SecretType} from "./modal/gitsource";
 import {RepoCheck} from "./modal/response_model/repo_check";
 import {Branch, BranchList} from "./modal/response_model/branch_list";
 import {RepoFileList} from "./modal/response_model/repo_file_list";
+import {ResponseLanguageList} from "./modal/response_model/language_list";
 
 export class BitbucketService extends BaseService {
 
@@ -77,14 +78,23 @@ export class BitbucketService extends BaseService {
           repo_slug: metadata.repoName,
           pagelen: 50
         });
-        const files = resp.data.values.map(f => f.path)
+        const files = resp.data.values.map(f => f.path);
         return <RepoFileList> { files }
       }catch (e) {
         throw e;
       }
     }
 
-    async getRepoLanguageList(): Promise<any> {
-      return undefined;
+    async getRepoLanguageList(): Promise<ResponseLanguageList> {
+      try {
+        const metadata = this.getRepoMetadata();
+        const resp = await this.client.repositories.get({
+          repo_slug: metadata.repoName,
+          username: metadata.owner
+        });
+        return <ResponseLanguageList> { languages: [resp.data.language] }
+      }catch (e) {
+        throw e;
+      }
     }
 }
