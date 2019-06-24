@@ -3,6 +3,7 @@ import {RepoCheck} from "./modal/response_model/repo_check";
 import {BranchList} from "./modal/response_model/branch_list";
 import {RepoFileList} from "./modal/response_model/repo_file_list";
 import {BuildType, detectBuildType} from "../build_type_detection/detector";
+import {ResponseLanguageList} from "./modal/response_model/language_list";
 
  export abstract class BaseService {
     protected gitsource: GitSource;
@@ -22,17 +23,18 @@ import {BuildType, detectBuildType} from "../build_type_detection/detector";
       }
     }
 
-    protected getRepoMetadata(){}
-    protected abstract async getRepoLanguageList()
+    protected getRepoMetadata(){};
     protected abstract getAuthProvider(): any;
 
     // Returns list of branches for given gitsource.
-    abstract async getRepoBranchList(): Promise<BranchList>
+    abstract async getRepoBranchList(): Promise<BranchList>;
 
    // Returns if repo reachable or not along with the api response.
-    abstract async isRepoReachable(): Promise<RepoCheck>
+    abstract async isRepoReachable(): Promise<RepoCheck>;
 
    // Returns source code tree for given gitsource
-    abstract async getRepoFileList(): Promise<RepoFileList>
+    abstract async getRepoFileList(): Promise<RepoFileList>;
 
+   // Returns list of detected languages
+   abstract async getRepoLanguageList(): Promise<ResponseLanguageList>;
 }

@@ -95,4 +95,24 @@ describe("Github Tests" , () => {
       })
   });
 
+  it('should detect Golang language', (done: any) => {
+    const gr = new GitSource(
+      "https://github.com/redhat-developer/devconsole-git",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GithubService(gr);
+    gs.getRepoLanguageList()
+      .then((r)=> {
+        expect(r.languages.length).toBeGreaterThanOrEqual(1);
+        done()
+      })
+      .catch((err: Error) => {
+        expect(err).toBeNull();
+        assert.fail("Failed to detect build type");
+        done(err);
+      })
+  });
+
 });

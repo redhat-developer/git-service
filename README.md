@@ -41,10 +41,13 @@ Detect build type
 ```sh
  const buildTypes = service.detectBuildType();
 ```
-
+Detect Languages list 
+```sh
+ const languages = service.getLanguageList();
+```
 Get list of files exist in the repo 
 ```sh
- const buildTypes = service.getRepoFileList();
+ const files = service.getRepoFileList();
 ```
 
 ## Available scripts

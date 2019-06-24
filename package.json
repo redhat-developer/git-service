@@ -30,11 +30,12 @@
   "author": "Jakub Synowiec <github@jakubsynowiec.info>",
   "license": "Apache-2.0",
   "dependencies": {
-    "tslib": "~1.9.3",
     "@octokit/rest": "latest",
-    "git-url-parse": "latest",
-    "parse-bitbucket-url": "latest",
     "bitbucket": "latest",
-    "power-assert": "latest"
+    "git-url-parse": "latest",
+    "gitlab": "^6.3.7",
+    "parse-bitbucket-url": "latest",
+    "power-assert": "latest",
+    "tslib": "~1.9.3"
   }
 }

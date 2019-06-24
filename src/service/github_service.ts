@@ -6,6 +6,7 @@ import {GitSource, SecretType} from "./modal/gitsource";
 import {RepoCheck} from "./modal/response_model/repo_check";
 import {Branch, BranchList} from "./modal/response_model/branch_list";
 import {RepoFileList} from "./modal/response_model/repo_file_list";
+import {ResponseLanguageList} from "./modal/response_model/language_list";
 
 export class GithubService extends BaseService {
     client: Octokit;
@@ -86,7 +87,20 @@ export class GithubService extends BaseService {
       }
   }
 
-  async getRepoLanguageList(): Promise<any> {
-    return undefined;
+  async getRepoLanguageList(): Promise<ResponseLanguageList> {
+    try {
+      const metadata = this.getRepoMetadata();
+      const resp = await this.client.repos.listLanguages({
+        owner: metadata.owner,
+        repo: metadata.repoName
+      });
+      if (resp.status === 200) {
+        return <ResponseLanguageList>{languages: Object.keys(resp.data)};
+      }
+      return <ResponseLanguageList>{};
+    }
+    catch (e) {
+      throw e;
+    }
   }
 }
