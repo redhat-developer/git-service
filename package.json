@@ -25,7 +25,7 @@
     "lint": "tslint -t stylish --project \"tsconfig.json\"",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "start": "tsc -p tsconfig.release.json && node build/src/index.js"
+    "start": "tsc -p tsconfig.release.json && node build/src/client_test.js"
   },
   "author": "Jakub Synowiec <github@jakubsynowiec.info>",
   "license": "Apache-2.0",
@@ -36,6 +36,7 @@
     "gitlab": "^6.3.7",
     "parse-bitbucket-url": "latest",
     "power-assert": "latest",
-    "tslib": "~1.9.3"
+    "tslib": "~1.9.3",
+    "docker-file-parser": "latest"
   }
 }
