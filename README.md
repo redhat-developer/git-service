@@ -49,6 +49,17 @@ Get list of files exist in the repo
 ```sh
  const files = service.getRepoFileList();
 ```
+Get Dockerfile content
+```javascript 1.8
+ const content = service.getDockerfileContent();
+```
+Get Exposed container
+```javascript
+ // Get dockerfile parser
+ const parser = new DockerFileParser(content);
+ // Get exposed container port
+ const containerPort = parser.getContainerPort(); 
+```
 
 ## Available scripts
 
