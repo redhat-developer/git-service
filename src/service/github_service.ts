@@ -103,4 +103,21 @@ export class GithubService extends BaseService {
       throw e;
     }
   }
+
+  async getDockerfileContent(): Promise<string> {
+      try {
+        const metadata = this.getRepoMetadata();
+        const resp = await this.client.repos.getContents({
+          owner: metadata.owner,
+          repo: metadata.repoName,
+          path: "Dockerfile"
+        });
+        if (resp.status == 200) {
+          return Buffer.from(resp.data.content, 'base64').toString();
+        }
+        throw new Error("Dockerfile doesn't exist in repo " + metadata.repoName)
+      }catch (e) {
+        throw e;
+      }
+  }
 }

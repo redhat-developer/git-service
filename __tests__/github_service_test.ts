@@ -1,6 +1,7 @@
 import {GitSource, SecretType} from "../src/service/modal/gitsource";
 import {GithubService} from "../src/service/github_service";
 import * as assert from "assert";
+import {DockerFileParser} from "../src/dockerfile_parser/parser";
 
 describe("Github Tests" , () => {
   // Read more about fake timers: http://facebook.github.io/jest/docs/en/timer-mocks.html#content
@@ -113,6 +114,24 @@ describe("Github Tests" , () => {
         assert.fail("Failed to detect build type");
         done(err);
       })
+  });
+
+  it('should return exposed container port', (done: any) => {
+    const gr = new GitSource(
+      "https://github.com/mikesparr/tutorial-react-docker",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GithubService(gr);
+    gs.getDockerfileContent()
+      .then((content: string) => {
+        const parser = new DockerFileParser(content);
+        const port = parser.getContainerPort();
+        expect(port).toEqual(5000);
+        done();
+      })
+      .catch((err: Error) => done(err))
   });
 
 });

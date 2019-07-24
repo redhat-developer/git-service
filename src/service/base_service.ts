@@ -35,6 +35,9 @@ import {ResponseLanguageList} from "./modal/response_model/language_list";
    // Returns source code tree for given gitsource
     abstract async getRepoFileList(): Promise<RepoFileList>;
 
+    // Checks if dockerfile exist in the repo and returns dockerfile content
+    abstract async getDockerfileContent(): Promise<string>;
+
    // Returns list of detected languages
    abstract async getRepoLanguageList(): Promise<ResponseLanguageList>;
 }

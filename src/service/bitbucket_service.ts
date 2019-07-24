@@ -7,6 +7,7 @@ import {RepoCheck} from "./modal/response_model/repo_check";
 import {Branch, BranchList} from "./modal/response_model/branch_list";
 import {RepoFileList} from "./modal/response_model/repo_file_list";
 import {ResponseLanguageList} from "./modal/response_model/language_list";
+import {__asyncDelegator} from "tslib";
 
 export class BitbucketService extends BaseService {
 
@@ -96,5 +97,20 @@ export class BitbucketService extends BaseService {
       }catch (e) {
         throw e;
       }
+    }
+
+    async getDockerfileContent(): Promise<string> {
+        try {
+          const metadata = this.getRepoMetadata();
+          const resp = await this.client.repositories.readSrc({
+            username: metadata.owner,
+            repo_slug: metadata.repoName,
+            path: 'Dockerfile',
+            node: metadata.defaultBranch,
+          });
+          return <string>resp.data;
+        }catch (e) {
+          throw e;
+        }
     }
 }
