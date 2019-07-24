@@ -7,7 +7,6 @@ import {RepoCheck} from "./modal/response_model/repo_check";
 import {Branch, BranchList} from "./modal/response_model/branch_list";
 import {RepoFileList} from "./modal/response_model/repo_file_list";
 import {ResponseLanguageList} from "./modal/response_model/language_list";
-import {__asyncDelegator} from "tslib";
 
 export class BitbucketService extends BaseService {
 
