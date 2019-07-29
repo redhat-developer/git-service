@@ -49,6 +49,13 @@ Get list of files exist in the repo
 ```sh
  const files = service.getRepoFileList();
 ```
+
+Detect Dockerfile in the repo
+```javascript
+ // This check returns boolean value
+ const isPresent = service.isDockerfilePresent();
+```
+
 Get Dockerfile content
 ```javascript 1.8
  const content = service.getDockerfileContent();
