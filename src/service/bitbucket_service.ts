@@ -1,4 +1,4 @@
-import * as Bitbucket from 'bitbucket'
+    import * as Bitbucket from 'bitbucket'
 import {BaseService} from "./base_service";
 import {RepoMetadata} from './modal/repo_metadata'
 import * as parseBitbucketUrl from 'parse-bitbucket-url'
@@ -28,7 +28,7 @@ export class BitbucketService extends BaseService {
             });
             return new RepoCheck(resp, true)
         }catch (e) {
-            throw e;
+          return this.onError(e);
         }
     }
 
@@ -42,7 +42,7 @@ export class BitbucketService extends BaseService {
             const list = resp.data.values.map(v => new Branch(v.name));
             return new BranchList(resp, list)
         }catch (e) {
-            throw e;
+          return this.onError(e);
         }
     }
 
@@ -81,7 +81,7 @@ export class BitbucketService extends BaseService {
         const files = resp.data.values.map(f => f.path);
         return <RepoFileList> { files }
       }catch (e) {
-        throw e;
+        return this.onError(e);
       }
     }
 
@@ -94,7 +94,7 @@ export class BitbucketService extends BaseService {
         });
         return <ResponseLanguageList> { languages: [resp.data.language] }
       }catch (e) {
-        throw e;
+        return this.onError(e);
       }
     }
 
@@ -109,7 +109,31 @@ export class BitbucketService extends BaseService {
           });
           return <string>resp.data;
         }catch (e) {
-          throw e;
+          return this.onError(e);
         }
+    }
+
+    async isDockerfilePresent(): Promise<Boolean> {
+      try {
+        const metadata = this.getRepoMetadata();
+        // this would throw an error if Dockerfile doesn't exist.
+        await this.client.repositories.readSrc({
+          username: metadata.owner,
+          repo_slug: metadata.repoName,
+          path: 'Dockerfile',
+          node: metadata.defaultBranch,
+        });
+        return true;
+      }catch (e) {
+        return false;
+      }
+    }
+
+    // This would convert Bitbucket error schema into Generic one.
+    onError = (e: Bitbucket.Schema.Error) => {
+      if (e && e.type === 'error') {
+        throw new Error(e.error.message);
+      }
+      throw e;
     }
 }

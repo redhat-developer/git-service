@@ -11,5 +11,5 @@ export function detectBuildType(files: string[]): BuildType[] {
     const matchedFiles = files.filter((f: string) => t.expectedRegexps.test(f));
     return <BuildType>{ buildType: t.name, language: t.language, files: matchedFiles };
   });
-  return buildTypes.filter(b => b.files.length > 0)
+  return buildTypes.filter((b: BuildType) => b.files.length > 0)
 }

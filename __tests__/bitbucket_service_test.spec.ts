@@ -58,4 +58,50 @@ describe('Bitbucket Service Tests', () => {
       .catch((err: Error) => done(err))
   });
 
+  it('should not return exposed container port', (done: any) => {
+    const gr = new GitSource(
+      "https://bitbucket.org/akshinde/testgitsource",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new BitbucketService(gr);
+    gs.getDockerfileContent()
+      .then((_: string) => {
+        done(new Error("This promise should have been rejected"));
+      })
+      .catch((err: Error) => {
+        expect(err).toBeDefined();
+        done();
+      })
+  });
+
+  it('should detect Dockerfile', (done: any) => {
+    const gr = new GitSource(
+      "https://bitbucket.org/akashshinde123/tutorial-react-docker",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new BitbucketService(gr);
+    gs.isDockerfilePresent().then((r: Boolean) => {
+      expect(r).toBe(true);
+      done();
+    }).catch((e:Error) => done(e))
+  });
+
+  it('should not detect Dockerfile', (done: any) => {
+    const gr = new GitSource(
+      "https://bitbucket.org/akshinde/testgitsource",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new BitbucketService(gr);
+    gs.isDockerfilePresent().then((r: Boolean) => {
+      expect(r).toBe(false);
+      done();
+    }).catch((e: Error) => done(e))
+  });
+
 });

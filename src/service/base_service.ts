@@ -38,6 +38,9 @@ import {ResponseLanguageList} from "./modal/response_model/language_list";
     // Checks if dockerfile exist in the repo and returns dockerfile content
     abstract async getDockerfileContent(): Promise<string>;
 
+    // Check if Dockerfile present in the repo.
+    abstract async isDockerfilePresent(): Promise<Boolean>;
+
    // Returns list of detected languages
    abstract async getRepoLanguageList(): Promise<ResponseLanguageList>;
 }

@@ -134,4 +134,31 @@ describe("Github Tests" , () => {
       .catch((err: Error) => done(err))
   });
 
+  it('should detect Dockerfile', (done: any) => {
+    const gr = new GitSource(
+      "https://github.com/mikesparr/tutorial-react-docker",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GithubService(gr);
+    gs.isDockerfilePresent().then((r: Boolean) => {
+      expect(r).toBe(true);
+      done();
+    }).catch((e:Error) => done(e))
+  });
+
+  it('should not detect Dockerfile', (done: any) => {
+    const gr = new GitSource(
+      "https://github.com/redhat-developer/devconsole-git",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GithubService(gr);
+    gs.isDockerfilePresent().then((r: Boolean) => {
+      expect(r).toBe(false);
+      done();
+    }).catch((e: Error) => done(e))
+  });
 });
