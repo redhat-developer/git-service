@@ -12,9 +12,9 @@ export class GitlabService extends BaseService{
   client: any
   repodata: any
   metadata: any
-  projectID: any
   constructor(gitsource: GitSource){
     super(gitsource)
+    this.metadata = this.getMetadata()
     this.repodata = this.getRepoMetadata()
     var token = this.getAuthProvider()
     this.client = new Gitlab({
@@ -27,7 +27,6 @@ export class GitlabService extends BaseService{
     if (this.repodata) {
       return this.repodata
     }
-    this.metadata = this.getMetadata()
     let host = this.metadata.protocol + "://" + this.metadata.source
     return new RepoMetadata(
         this.metadata.owner,
@@ -55,30 +54,31 @@ export class GitlabService extends BaseService{
 
   async getProjectId(): Promise<any> {
     try {
-        if(this.projectID) {
-          return this.projectID;
-        }
-        this.metadata = this.getMetadata()
         const resp = await this.client.Projects.search(this.metadata.name)
-        resp.forEach(p => {
-          if (p.path_with_namespace === this.metadata.full_name) {
-            this.projectID = p.id
+        for (let i = 0; i < resp.length; i++) {
+          if (resp[i].path_with_namespace === this.metadata.full_name) {
+            return resp[i].id
           }
-        });
-        return this.projectID;
+        }
+        throw new Error('Unable to find gitlab project id');
     }catch (e) {
         throw e;
     }
   }
 
   async isRepoReachable(): Promise<RepoCheck> {
-    this.metadata = this.getMetadata()
     try {
         const resp = await this.client.Projects.search(this.metadata.name)
         if (resp.length < 1) {
           return new RepoCheck(resp, false)
+        }else{
+          for (let i = 0; i < resp.length; i++) {
+            if (resp[i].path_with_namespace === this.metadata.full_name) {
+              return new RepoCheck(resp, true)
+            }
+          }
         }
-        return new RepoCheck(resp, true)
+        return new RepoCheck(resp, false)
     }catch (e) {
         throw e;
     }
@@ -86,8 +86,8 @@ export class GitlabService extends BaseService{
 
 async getRepoBranchList(): Promise<BranchList> {
     try {
-        this.projectID = await this.getProjectId();
-        const resp = await this.client.Branches.all(this.projectID)
+        const projectID = await this.getProjectId();
+        const resp = await this.client.Branches.all(projectID)
         const list = resp.map(branch => {
           return new Branch(branch.name);
         });
@@ -99,8 +99,8 @@ async getRepoBranchList(): Promise<BranchList> {
 
   async getRepoFileList(): Promise<RepoFileList> {
     try {
-      this.projectID = await this.getProjectId();
-      const resp = await this.client.Repositories.tree(this.projectID)
+      const projectID = await this.getProjectId();
+      const resp = await this.client.Repositories.tree(projectID)
       var files = [];
       resp.forEach(t => {
         if(t.type === "blob"){
@@ -116,8 +116,8 @@ async getRepoBranchList(): Promise<BranchList> {
 
   async getRepoLanguageList(): Promise<ResponseLanguageList> {
     try {
-      this.projectID = await this.getProjectId();
-      const resp = await this.client.Projects.languages(this.projectID)
+      const projectID = await this.getProjectId();
+      const resp = await this.client.Projects.languages(projectID)
       return <ResponseLanguageList>{languages: Object.keys(resp)};
     }
     catch (e) {
