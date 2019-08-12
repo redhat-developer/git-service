@@ -32,11 +32,11 @@
   "dependencies": {
     "@octokit/rest": "latest",
     "bitbucket": "latest",
+    "docker-file-parser": "latest",
     "git-url-parse": "latest",
-    "gitlab": "^6.3.7",
+    "gitlab": "latest",
     "parse-bitbucket-url": "latest",
     "power-assert": "latest",
-    "tslib": "~1.9.3",
-    "docker-file-parser": "latest"
+    "tslib": "~1.9.3"
   }
 }
