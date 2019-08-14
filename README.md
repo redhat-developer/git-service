@@ -50,6 +50,24 @@ Get list of files exist in the repo
  const files = service.getRepoFileList();
 ```
 
+Detect Dockerfile in the repo
+```javascript
+ // This check returns boolean value
+ const isPresent = service.isDockerfilePresent();
+```
+
+Get Dockerfile content
+```javascript 1.8
+ const content = service.getDockerfileContent();
+```
+Get Exposed container
+```javascript
+ // Get dockerfile parser
+ const parser = new DockerFileParser(content);
+ // Get exposed container port
+ const containerPort = parser.getContainerPort(); 
+```
+
 ## Available scripts
 
 + `clean` - remove coverage data, Jest cache and transpiled files,
