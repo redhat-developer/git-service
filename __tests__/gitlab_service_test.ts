@@ -1,6 +1,7 @@
 import {GitSource, SecretType} from "../src/service/modal/gitsource";
 import {GitlabService} from "../src/service/gitlab_service";
 import * as assert from "assert";
+import {DockerFileParser} from "../src/dockerfile_parser/parser";
 
 describe("Gitlab Tests" , () => {
   // Read more about fake timers: http://facebook.github.io/jest/docs/en/timer-mocks.html#content
@@ -113,6 +114,52 @@ describe("Gitlab Tests" , () => {
         assert.fail("Failed to detect build type");
         done(err);
       })
+  });
+
+  it('should return exposed container port', (done: any) => {
+    const gr = new GitSource(
+      "https://gitlab.com/jpratik999/tutorial-react-docker.git",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GitlabService(gr);
+    gs.getDockerfileContent()
+      .then((content: string) => {
+        const parser = new DockerFileParser(content);
+        const port = parser.getContainerPort();
+        expect(port).toEqual(5000);
+        done();
+      })
+      .catch((err: Error) => done(err))
+  });
+
+  it('should detect Dockerfile', (done: any) => {
+    const gr = new GitSource(
+      "https://gitlab.com/jpratik999/tutorial-react-docker.git",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GitlabService(gr);
+    gs.isDockerfilePresent().then((r: Boolean) => {
+      expect(r).toBe(true);
+      done();
+    }).catch((e:Error) => done(e))
+  });
+
+  it('should not detect Dockerfile', (done: any) => {
+    const gr = new GitSource(
+      "https://gitlab.com/jpratik999/devconsole-git.git",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GitlabService(gr);
+    gs.isDockerfilePresent().then((r: Boolean) => {
+      expect(r).toBe(false);
+      done();
+    }).catch((e: Error) => done(e))
   });
 
 });
