@@ -60,7 +60,7 @@ export class GitlabService extends BaseService{
             return resp[i].id
           }
         }
-        throw new Error('Unable to find gitlab project id');
+        throw new Error('Unable to find gitlab project id, check project details!');
     }catch (e) {
         throw e;
     }
@@ -124,5 +124,24 @@ async getRepoBranchList(): Promise<BranchList> {
       throw e;
     }
   }
+
+  async getDockerfileContent(): Promise<string> {
+    try {
+      const projectID = await this.getProjectId();
+      return await this.client.RepositoryFiles.showRaw(projectID, 'Dockerfile', this.gitsource.ref)
+    }catch (e) {
+      throw e;
+    }
+}
+
+async isDockerfilePresent(): Promise<Boolean> {
+  try {
+    const projectID = await this.getProjectId();
+    await this.client.RepositoryFiles.showRaw(projectID, 'Dockerfile', this.gitsource.ref)
+    return true
+  }catch (e) {
+    return false
+  }
+}
 }
 
