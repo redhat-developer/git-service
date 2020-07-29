@@ -134,4 +134,18 @@ export class GithubService extends BaseService {
       return false;
     }
   }
+
+  async isDevfilePresent(): Promise<Boolean> {
+    try {
+      const metadata = this.getRepoMetadata();
+      const resp = await this.client.repos.getContents({
+        owner: metadata.owner,
+        repo: metadata.repoName,
+        path: "devfile.yaml"
+      });
+      return resp.status == 200;
+    }catch (e) {
+      return false;
+    }
+  }
 }
