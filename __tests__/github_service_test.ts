@@ -161,4 +161,32 @@ describe("Github Tests" , () => {
       done();
     }).catch((e: Error) => done(e))
   });
+
+  it('should detect Devfile', (done: any) => {
+    const gr = new GitSource(
+      "https://github.com/reginapizza/che",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GithubService(gr);
+    gs.isDevfilePresent().then((r: Boolean) => {
+      expect(r).toBe(true);
+      done();
+    }).catch((e:Error) => done(e))
+  });
+
+  it('should not detect Devfile', (done: any) => {
+    const gr = new GitSource(
+      "https://github.com/redhat-developer/devconsole-git",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GithubService(gr);
+    gs.isDevfilePresent().then((r: Boolean) => {
+      expect(r).toBe(false);
+      done();
+    }).catch((e: Error) => done(e))
+  });
 });
