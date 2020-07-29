@@ -129,6 +129,22 @@ export class BitbucketService extends BaseService {
       }
     }
 
+    async isDevfilePresent(): Promise<Boolean> {
+      try {
+        const metadata = this.getRepoMetadata();
+        // this would throw an error if Devfile doesn't exist.
+        await this.client.repositories.readSrc({
+          username: metadata.owner,
+          repo_slug: metadata.repoName,
+          path: 'devfile.yaml',
+          node: metadata.defaultBranch,
+        });
+        return true;
+      }catch (e) {
+        return false;
+      }
+    }
+
     // This would convert Bitbucket error schema into Generic one.
     onError = (e: Bitbucket.Schema.Error) => {
       if (e && e.type === 'error') {
