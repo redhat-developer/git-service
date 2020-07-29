@@ -60,6 +60,13 @@ Get Dockerfile content
 ```javascript 1.8
  const content = service.getDockerfileContent();
 ```
+
+Detect Devfile in the repo
+```javascript
+ // This check returns boolean value
+ const isPresent = service.isDevfilePresent();
+```
+
 Get Exposed container
 ```javascript
  // Get dockerfile parser
