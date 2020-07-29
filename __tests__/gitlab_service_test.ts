@@ -142,7 +142,7 @@ describe("Gitlab Tests" , () => {
     );
 
     const gs = new GitlabService(gr);
-    gs.isDockerfilePresent().then((r: Boolean) => {
+    gs.isDevfilePresent().then((r: Boolean) => {
       expect(r).toBe(true);
       done();
     }).catch((e:Error) => done(e))
@@ -157,6 +157,34 @@ describe("Gitlab Tests" , () => {
 
     const gs = new GitlabService(gr);
     gs.isDockerfilePresent().then((r: Boolean) => {
+      expect(r).toBe(false);
+      done();
+    }).catch((e: Error) => done(e))
+  });
+
+  it('should detect Devfile', (done: any) => {
+    const gr = new GitSource(
+      "https://gitlab.com/rescott/che.git",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GitlabService(gr);
+    gs.isDevfilePresent().then((r: Boolean) => {
+      expect(r).toBe(true);
+      done();
+    }).catch((e:Error) => done(e))
+  });
+
+  it('should not detect Devfile', (done: any) => {
+    const gr = new GitSource(
+      "https://gitlab.com/jpratik999/devconsole-git.git",
+      SecretType.NO_AUTH,
+      null
+    );
+
+    const gs = new GitlabService(gr);
+    gs.isDevfilePresent().then((r: Boolean) => {
       expect(r).toBe(false);
       done();
     }).catch((e: Error) => done(e))
