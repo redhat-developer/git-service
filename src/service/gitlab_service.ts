@@ -147,7 +147,7 @@ export class GitlabService extends BaseService{
   async isDevfilePresent(): Promise<Boolean> {
     try {
       const projectID = await this.getProjectId();
-      await this.client.RepositoryFiles.showRaw(projectID, 'devfile', this.gitsource.ref)
+      await this.client.RepositoryFiles.showRaw(projectID, 'devfile.yaml', this.gitsource.ref)
       return true
     }catch (e) {
       return false
