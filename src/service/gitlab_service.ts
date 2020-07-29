@@ -82,20 +82,20 @@ export class GitlabService extends BaseService{
     }catch (e) {
         throw e;
     }
-}
-
-async getRepoBranchList(): Promise<BranchList> {
-    try {
-        const projectID = await this.getProjectId();
-        const resp = await this.client.Branches.all(projectID)
-        const list = resp.map(branch => {
-          return new Branch(branch.name);
-        });
-        return new BranchList(resp, list)
-    }catch (e) {
-        throw e;
-    }
   }
+
+  async getRepoBranchList(): Promise<BranchList> {
+      try {
+          const projectID = await this.getProjectId();
+          const resp = await this.client.Branches.all(projectID)
+          const list = resp.map(branch => {
+            return new Branch(branch.name);
+          });
+          return new BranchList(resp, list)
+      }catch (e) {
+          throw e;
+      }
+    }
 
   async getRepoFileList(): Promise<RepoFileList> {
     try {
@@ -132,16 +132,27 @@ async getRepoBranchList(): Promise<BranchList> {
     }catch (e) {
       throw e;
     }
-}
+  }
 
-async isDockerfilePresent(): Promise<Boolean> {
-  try {
-    const projectID = await this.getProjectId();
-    await this.client.RepositoryFiles.showRaw(projectID, 'Dockerfile', this.gitsource.ref)
-    return true
-  }catch (e) {
-    return false
+  async isDockerfilePresent(): Promise<Boolean> {
+    try {
+      const projectID = await this.getProjectId();
+      await this.client.RepositoryFiles.showRaw(projectID, 'Dockerfile', this.gitsource.ref)
+      return true
+    }catch (e) {
+      return false
+    }
+  }
+
+  async isDevfilePresent(): Promise<Boolean> {
+    try {
+      const projectID = await this.getProjectId();
+      await this.client.RepositoryFiles.showRaw(projectID, 'devfile', this.gitsource.ref)
+      return true
+    }catch (e) {
+      return false
+    }
   }
 }
-}
+
 
